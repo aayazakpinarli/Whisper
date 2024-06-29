@@ -3,18 +3,25 @@ version: '3.8'
 services:
   web:
     build:
-      context: .
+      context: MessageApp
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=myproject.settings
     depends_on:
       - db
+
   db:
     image: postgres:13
     environment:
       POSTGRES_DB: myproject
-      POSTGRES_USER: 'aayaz'
-      POSTGRES_PASSWORD: '1234'
+      POSTGRES_USER: aayaz  # Use the default superuser
+      POSTGRES_PASSWORD: RZpp86QL.  # Use the default superuser password
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
