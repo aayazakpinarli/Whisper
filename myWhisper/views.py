@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from myWhisper.models import Users
+from myWhisper.models import Users, Message
 from pyexpat.errors import messages
+
 
 # Create your views here.
 
@@ -37,3 +38,4 @@ def register(request):
                     return redirect('/')
     else:
         return render(request, 'register.html')
+
