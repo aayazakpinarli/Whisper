@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'MessageApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'whisper',
+        'NAME': 'Whisper',
         'USER' : 'postgres',
         'PASSWORD' : '1234',
         'HOST' : 'localhost',
