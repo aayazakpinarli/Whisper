@@ -1,15 +1,34 @@
-<!doctype html>
+<!-- templates/chat.html -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Chat Application</title>
 </head>
 <body>
-<li><a href="register">Register</a></li>
-<h1>REGISTERED</h1>
+    <h1>Chat Application</h1>
+    <div id="chat-box"></div>
+    <input type="text" id="message-input" placeholder="Type a message">
+    <button id="send-button">Send</button>
 
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+
+        const ws = new WebSocket('ws://' + window.location.host + '/ws/chat/');
+
+        ws.onmessage = function(event) {
+            const message = document.createElement('div');
+            message.textContent = JSON.parse(event.data).message;
+            chatBox.appendChild(message);
+        };
+
+        sendButton.onclick = function() {
+            const message = messageInput.value;
+            ws.send(JSON.stringify({'message': message}));
+            messageInput.value = '';
+        };
+    </script>
 </body>
 </html>
