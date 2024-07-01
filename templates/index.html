@@ -6,7 +6,9 @@
     <title>Chat Application</title>
 </head>
 <body>
-    <h1>Chat Application</h1>
+<h1>Chat Application</h1>
+
+{% if user.is_authenticated %}
     <div id="chat-box"></div>
     <input type="text" id="message-input" placeholder="Type a message">
     <button id="send-button">Send</button>
@@ -30,5 +32,11 @@
             messageInput.value = '';
         };
     </script>
+    <li>Hello, {{ user.username }}</li>
+    <button id="send-button"><a href="logout">logout</a></button>
+{% else %}
+    <a href="login">login</a>
+    <a href="register">Register</a>
+{% endif %}
 </body>
 </html>
