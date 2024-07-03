@@ -1,16 +1,15 @@
 from urllib import request
 
 from django.shortcuts import render, redirect
-from myWhisper.models import Users, Message
 from django.contrib import messages
-from django.contrib.auth.models import auth
-
+from django.contrib.auth.models import auth, User
 
 # Create your views here.
 
 
 def myWhisper(request):
     return render(request, 'index.html')
+
 
 def login(request):
 
@@ -33,6 +32,7 @@ def login(request):
 
 
 def logout(request):
+
     auth.logout(request)
     return redirect('login')
 
@@ -46,16 +46,16 @@ def register(request):
             messages.info(request, 'Passwords must match!')
         else:
             email = request.POST['email']
-            if Users.objects.filter(email=email).exists():
+            if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email exists!')
             else:
                 username = request.POST['username']
-                if Users.objects.filter(username=username).exists():
+                if User.objects.filter(username=username).exists():
                     messages.info(request, 'Username exists!')
                 else:
                     first_name = request.POST['name']
                     last_name = request.POST['surname']
-                    user = Users(name=first_name, last_name=last_name,
+                    user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                  email=email, username=username, password=password)
                     try:
                         user.save()
@@ -64,7 +64,7 @@ def register(request):
                     except Exception as e:
                         print(f"Error saving user: {str(e)}")
                         messages.info(request, 'Save errorr!!')
-
         return render(request, 'register.html')
+
     else:
         return render(request, 'register.html')
