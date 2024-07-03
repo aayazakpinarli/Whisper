@@ -4,16 +4,16 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 class WhisperConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        self.roomGroupName = "group_chat"
+        self.room_group_name = "group_chat"
         await self.channel_layer.group_add(
-            self.roomGroupName,
+            self.room_group_name,
             self.channel_name
         )
         await self.accept()
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
-            self.roomGroupName,
+            self.room_group_name,
             self.channel_layer
         )
 
@@ -23,7 +23,7 @@ class WhisperConsumer(AsyncWebsocketConsumer):
         username = text_data_json["username"]
         time = text_data_json["time"]
         await self.channel_layer.group_send(
-            self.roomGroupName, {
+            self.room_group_name, {
                 "type": "sendMessage",
                 "message": message,
                 "username": username,
@@ -34,5 +34,9 @@ class WhisperConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         username = event["username"]
         time = event["time"]
-        await self.send(text_data=json.dumps({"message": message, "username": username, "time": time}))
+        await self.send(text_data=json.dumps({
+            "message": message,
+            "username": username,
+            "time": time
+        }))
 
