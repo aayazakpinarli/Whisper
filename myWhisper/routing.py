@@ -1,14 +1,7 @@
-# your_app/routing.py
-from django.urls import re_path
-from channels.routing import ProtocolTypeRouter, URLRouter, get_default_application
-from channels.auth import AuthMiddlewareStack
-from .consumers import WhisperConsumer
+from django.urls import path, include
+from myWhisper.consumers import WhisperConsumer
 
-application = ProtocolTypeRouter({
-    "http": get_default_application(),
-    "websocket": AuthMiddlewareStack(
-        URLRouter([
-            re_path(r'ws/chat/$', WhisperConsumer.as_asgi()),
-        ])
-    ),
-})
+# the empty string routes to ChatConsumer, which manages the chat functionality.
+websocket_urlpatterns = [
+    path("", WhisperConsumer.as_asgi()),
+]
