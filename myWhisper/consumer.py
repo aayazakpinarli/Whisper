@@ -1,6 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 class WhisperConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
