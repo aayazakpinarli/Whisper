@@ -72,12 +72,7 @@ TEMPLATES = [
 ]
 
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    }
-}
-
+WSGI_APPLICATION = 'DjangoChat.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -137,4 +132,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = 'MessageApp.asgi.application'
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MessageApp.settings')
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
+
+LOGIN_REDIRECT_URL = "myWhisper"
+LOGOUT_REDIRECT_URL = "login"
+
