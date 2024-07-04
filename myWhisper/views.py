@@ -12,14 +12,6 @@ from django.utils.decorators import method_decorator
 # Create your views here.
 
 
-class ChatPageView(View):
-    def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
-        context = {}
-        return render(request, "chat/chatPage.html", context)
-
-
 @method_decorator(login_required, name='dispatch')
 class MessagesPageView(View):
     def get(self, request):
@@ -28,10 +20,6 @@ class MessagesPageView(View):
             'Threads': threads
         }
         return render(request, 'chat/messages.html', context)
-
-class MyWhisperView(View):
-    def get(self, request):
-        return render(request, 'index.html')
 
 
 class LoginView(View):
