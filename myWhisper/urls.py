@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ChatPageView, MessagesPageView, MyWhisperView, LoginView, LogoutView, RegisterView
+from .views import MessagesPageView, LoginView, LogoutView, RegisterView
 
 
 urlpatterns = [
