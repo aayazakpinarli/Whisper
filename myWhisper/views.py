@@ -73,6 +73,13 @@ class RegisterView(View):
                     try:
                         user.save()
                         print("User saved successfully!")
+
+                        # Create threads with all existing users
+                        existing_users = User.objects.exclude(id=user.id)
+                        for existing_user in existing_users:
+                            Thread.objects.create(first_person=user, second_person=existing_user)
+                        print("Threads created successfully!")
+
                         return redirect('login')
                     except Exception as e:
                         print(f"Error saving user: {str(e)}")
