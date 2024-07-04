@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Message, Thread, ChatMessage
+from .models import Thread, ChatMessage
 from django.core.exceptions import ValidationError
 from django import forms
 
@@ -7,8 +7,10 @@ from django import forms
 # Register your models here.
 admin.site.register(ChatMessage)
 
+
 class ChatMessage(admin.TabularInline):
     model = ChatMessage
+
 
 '''class ThreadForm(forms.ModelForm):
     def clean(self):
@@ -26,8 +28,11 @@ class ChatMessage(admin.TabularInline):
         if qs.exists():
             raise ValidationError(f'Thread between {first_person} and {second_person} already exists.')
 '''
+
+
 class ThreadAdmin(admin.ModelAdmin):
     inlines = [ChatMessage]
+
     class Meta:
         model = Thread
 
