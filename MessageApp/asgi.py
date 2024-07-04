@@ -10,10 +10,8 @@ https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
-from django.urls import path
 
 from myWhisper import routing
-from myWhisper.consumer import WhisperConsumer
 import os
 
 
@@ -23,10 +21,9 @@ application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
         "websocket": AuthMiddlewareStack(
-            URLRouter([
-                path("", WhisperConsumer.as_asgi()),
-            ])
-        ),
+            URLRouter(
+                routing.websocket_urlpatterns
+            )
+        )
     }
 )
-
