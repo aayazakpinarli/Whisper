@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import auth, User
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.db.models import Q
 
 # Create your models here.
@@ -15,8 +14,10 @@ class ThreadManager(models.Manager):
 
 
 class Thread(models.Model):
-    first_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_first_person')
-    second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='thread_second_person')
+    first_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
+                                     related_name='thread_first_person')
+    second_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,
+                                      related_name='thread_second_person')
     updated = models.DateTimeField(auto_now=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -27,8 +28,8 @@ class Thread(models.Model):
 
 
 class ChatMessage(models.Model):
-    thread = models.ForeignKey(Thread, null=True, blank=True, related_name='chatmessage_thread', on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, null=True, blank=True,
+                               related_name='chatmessage_thread', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-
