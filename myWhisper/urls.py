@@ -1,11 +1,10 @@
 from django.urls import path
-from myWhisper import views as chat_views
-from . import views
+from .views import ChatPageView, MessagesPageView, MyWhisperView, LoginView, LogoutView, RegisterView
+
 
 urlpatterns = [
-    path("", views.messagesPage),
-    #path('', views.myWhisper, name='myWhisper'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('', MessagesPageView.as_view(), name='messagesPage'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
 ]
