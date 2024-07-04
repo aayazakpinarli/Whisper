@@ -43,15 +43,16 @@
                                             {% else %}
                                                 <span>{{ thread.first_person.username }}</span>
                                             {% endif %}
-
-                                        {#<p>Kalid is online</p>#}
                                         </div>
                                     </div>
                                 </li>
                             {% endfor %}
 						</ui>
 					</div>
-					<div class="card-footer"></div>
+					<div class="card-footer" style="text-align: center;">
+                        <a href="/logout" style="color: Black; font-size: large"> <b>Logout</b></a>
+                    </div>
+
 				</div></div>
 				<div class="col-md-8 col-xl-6 chat h-100 mt-4">
 					<div class="card">
