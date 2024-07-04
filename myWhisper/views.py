@@ -3,9 +3,24 @@ from urllib import request
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import auth, User
+from django.contrib.auth.decorators import login_required
+from myWhisper.models import Thread
 
 # Create your views here.
 
+def chatPage(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    context = {}
+    return render(request, "chat/chatPage.html", context)
+
+@login_required
+def messagesPage(request):
+    threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+    context = {
+        'Threads': threads
+    }
+    return render(request, 'chat/messages.html', context)
 
 def myWhisper(request):
     return render(request, 'index.html')
