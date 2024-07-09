@@ -1,5 +1,3 @@
-from urllib import request
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import auth, User
@@ -42,11 +40,11 @@ class LoginView(View):
             return redirect('login')
 
 
-
 class LogoutView(View):
     def get(self, request):
         auth_logout(request)
         return redirect('login')
+
 
 class RegisterView(View):
     def get(self, request):
