@@ -141,6 +141,6 @@ CHANNEL_LAYERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = "myWhisper"
 LOGOUT_REDIRECT_URL = "login"
 
+LOGIN_URL = 'login'
