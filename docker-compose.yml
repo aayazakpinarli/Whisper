@@ -11,16 +11,16 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DJANGO_SETTINGS_MODULE=myproject.settings
+      - DJANGO_SETTINGS_MODULE=MessageApp.settings
     depends_on:
       - db
 
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: myproject
-      POSTGRES_USER: aayaz  # Use the default superuser
-      POSTGRES_PASSWORD: RZpp86QL.  # Use the default superuser password
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres  # Use the default superuser
+      POSTGRES_PASSWORD: 1234  # Use the default superuser password
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:

@@ -1,14 +1,14 @@
 # Use an official Python runtime as a parent image
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 # Set the working directory in the container
 WORKDIR /code
 
 # Copy the requirements file into the container at /code
-COPY ../requirements.txt .
+COPY requirements.txt .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the rest of the application code into the container at /code
 COPY . .
@@ -21,4 +21,4 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Run the application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "MessageApp.asgi:application"]
