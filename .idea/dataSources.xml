@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\ayseg\PycharmProjects\MessageApp\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="Whisper@localhost" uuid="93b01a65-2b42-4012-9ef1-fa528a5ff3e6">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/Whisper</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
