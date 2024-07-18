@@ -196,7 +196,7 @@ html {
 	cursor: pointer;
 	font-size: 20px;
 }
-.action_menu {
+.action_menu_settings {
 	z-index: 1;
 	position: absolute;
 	padding: 15px 0;
@@ -207,20 +207,20 @@ html {
 	right: 15px;
 	display: none;
 }
-.action_menu ul {
+.action_menu_settings ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 }
-.action_menu ul li {
+.action_menu_settings ul li {
 	width: 100%;
 	padding: 10px 15px;
 	margin-bottom: 5px;
 }
-.action_menu ul li i {
+.action_menu_settings ul li i {
 	padding-right: 10px;
 }
-.action_menu ul li:hover {
+.action_menu_settings ul li:hover {
 	cursor: pointer;
 	background-color: rgba(0, 0, 0, 0.2);
 }
