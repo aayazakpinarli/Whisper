@@ -40,26 +40,26 @@
                     </div>
                     <div>
                         <form action="" method="post">
-                        {% csrf_token %}
-                        <div>
-                            {% for message in messages %}
-                                <h3 style="color: black"> {{ message }} </h3>
-                            {% endfor %}
-                        </div>
-                        <h4>Change username </h4>
-                        <label>Enter new username : </label>
-                        <input type="text" name="username">
-                        <h4>Change password </h4>
-                        <label for="">Enter your password : </label>
-                        <input type="password" name="old_password">
-                        <br>
-                        <label for="">Enter new password : </label>
-                        <input type="password" name="new_password">
+                            {% csrf_token %}
+                            <div>
+                                {% for message in messages %}
+                                    <h3 style="color: black"> {{ message }} </h3>
+                                {% endfor %}
+                            </div>
+                            <h4>Change username </h4>
+                            <label>Enter new username : </label>
+                            <input type="text" name="username">
+                            <h4>Change password </h4>
+                            <label for="">Enter your password : </label>
+                            <input type="password" name="old_password">
+                            <br>
+                            <label for="">Enter new password : </label>
+                            <input type="password" name="new_password">
 
-                        <div>
+                            <div>
                                 <input type="submit" value="Change">
 
-                        </div>
+                            </div>
                         </form>
                     </div>
 
