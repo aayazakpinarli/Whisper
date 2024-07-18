@@ -17,9 +17,14 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MessageApp.settings')
 
+# ProtocolTypeRouter: direct the incoming connections to different handlers
+# based on the type of the protocol (HTTP or WebSocket)
 application = ProtocolTypeRouter(
     {
+        # HTTP handler
         "http": get_asgi_application(),
+        # WebSocket handler
+        # route Websocket connections based on URL patterns on websocket_urlpatterns
         "websocket": AuthMiddlewareStack(
             URLRouter(
                 routing.websocket_urlpatterns

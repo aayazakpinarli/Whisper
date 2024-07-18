@@ -5,10 +5,15 @@ from django import forms
 
 
 # Register your models here.
+
+# allows ChatMessage instance to be managed through admin interface
 admin.site.register(ChatMessage)
 
 
-class ChatMessage(admin.TabularInline):
+# allow for inline editing ChatMessage within another model's admin interface
+# tabularInline: django admin class that displays related models in tabular format (as rows)
+# within the parent model's admin page
+class ChatMessageInline(admin.TabularInline):
     model = ChatMessage
 
 
@@ -30,11 +35,21 @@ class ChatMessage(admin.TabularInline):
 '''
 
 
+# inherits from admin.ModelAdmin, allows customization of how the Thread model is displayed and managed
+# in the Django admin interface
+# THIS IS FOR CUSTOMIZATION
 class ThreadAdmin(admin.ModelAdmin):
-    inlines = [ChatMessage]
+    # inlines: specifies that instances of ChatMessage should be displayed inline within the Thread admin page
+    # using chatMessageInline allows user to view and edit related ChatMessage entries directly on thread admin page
+    inlines = [ChatMessageInline]
 
     class Meta:
+        # associate threadAdmin class with Thread model. It tells Django
+        # that this admin class is meant to manage Thread instances
         model = Thread
 
 
+# register thread model with Django admin site
+# THIS IS FOR REGISTRATION
+# it tells Django to use ThreadAdmin class to manage how the Thread model appears in the admin interface
 admin.site.register(Thread, ThreadAdmin)

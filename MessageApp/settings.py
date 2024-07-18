@@ -136,6 +136,7 @@ ASGI_APPLICATION = 'MessageApp.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
+        # InMemoryChannelLayer: for production use Redis
         "BACKEND": "channels.layers.InMemoryChannelLayer",
     }
 }
