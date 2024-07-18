@@ -131,4 +131,7 @@ class ProfileView(View):
             else:
                 messages.info(request, 'Please enter new password!')
 
+        if not old_password and not new_password and not username:
+            messages.info(request, 'Please fill!')
+
         return redirect('/profile')
