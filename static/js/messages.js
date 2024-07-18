@@ -56,7 +56,7 @@ function newMessage(message, sent_by_id, thread_id) {
 	}
 	let message_element;
 	let chat_id = 'chat_' + thread_id
-	if(sent_by_id == USER_ID){
+	if(sent_by_id === USER_ID){
 	    message_element = `
 			<div class="d-flex mb-4 replied">
 				<div class="msg_cotainer_send">
