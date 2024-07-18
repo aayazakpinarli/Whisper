@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'DjangoChat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "Whisper",
+        'NAME': 'Whisper',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'db',

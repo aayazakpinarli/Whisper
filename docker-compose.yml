@@ -18,10 +18,10 @@ services:
   db:
     image: postgres:13
     environment:
-      POSTGRES_DB: db
+      POSTGRES_DB: Whisper
       POSTGRES_USER: postgres  # Use the default superuser
       POSTGRES_PASSWORD: 1234  # Use the default superuser password
     volumes:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "5433:5432"
