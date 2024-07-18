@@ -11,7 +11,9 @@ User = get_user_model()
 class WhisperConsumer(AsyncConsumer):
 
     # async: diğer görevler durdurulmadan methodun gerçekleştirilmesini sağlar
-    # print("", event): line output the 'event' to console or logs
+    def __init__(self):
+        self.chat_room = None
+
     async def websocket_connect(self, event):
         print("connected", event)
 
@@ -35,7 +37,6 @@ class WhisperConsumer(AsyncConsumer):
             self.channel_name,
         )
 
-        # await: async
         # self.send: send a message back to the client over the WS connection
         await self.send({
             # accept connection, without this WS connection closed by default
