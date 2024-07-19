@@ -52,3 +52,10 @@ class ChatMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Friendship(models.Model):
+    user = models.ForeignKey(User, related_name='host_user', on_delete=models.CASCADE)
+    friend = models.ForeignKey(User, related_name='friend_user', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
