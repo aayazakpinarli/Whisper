@@ -40,11 +40,15 @@
                             </ul>
                         </div>
                     </div>
+                    <div>
+                        {% for friend in Friends %}
+                        <li>{{ friend }}</li>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="card-body contacts_body">
                     <ui class="contacts">
                         {% for thread in Threads %}
-                            <!-- first chat in the list is marked as active with this : others false -->
                             <li class="contact-li"
                                 chat-id="chat_{{ thread.id }}" style="cursor: pointer">
                                 <div class="d-flex bd-highlight">
