@@ -1,7 +1,6 @@
 {% load static %}
 
 <!DOCTYPE html>
-<!-- Coding by CodingNepal | www.codingnepalweb.com-->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -21,11 +20,6 @@
                 {% csrf_token %}
 
                 <div class="input-boxes">
-                    <div>
-                        {% for message in messages %}
-                            <h3 style="color: rebeccapurple"> {{ message }} </h3>
-                        {% endfor %}
-                    </div>
                     <div class="input-box">
                         <i class="fas fa-user"></i>
                         <input type="text" name="name" placeholder="Enter your name" required>
