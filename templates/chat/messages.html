@@ -74,7 +74,9 @@
         <div class="col-md-8 col-xl-6 chat h-100 mt-4">
             <div class="card">
                 {% for thread in Threads %}
-                    <div class="messages-wrapper  {% if forloop.first %}hide {% else %}hide{% endif %}"
+
+                    <!-- mesajları hide ediyor-->
+                    <div class="messages-wrapper hide"
                          chat-id="chat_{{ thread.id }}" other-user-id="
                                         {% if thread.first_person == user %}
                                             {{ thread.second_person.id }}

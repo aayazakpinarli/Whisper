@@ -54,6 +54,9 @@ function newMessage(message, sent_by_id, thread_id) {
 	if ($.trim(message) === '') {
 		return false;
 	}
+    let time = new Date();
+    let timestamp = time.getDate() + ' ' + time.getDay() + ', ' + time.getHours() + ':' +time.getMinutes();
+
 	let message_element;
 	let chat_id = 'chat_' + thread_id
 	if(sent_by_id == USER_ID){
@@ -61,7 +64,7 @@ function newMessage(message, sent_by_id, thread_id) {
 			<div class="d-flex mb-4 replied">
 				<div class="msg_cotainer_send">
 					${message}
-					<span class="msg_time_send">8:55 AM, Today</span>
+					<span class="msg_time_send">${timestamp}</span>
 				</div>
 				<div class="img_cont_msg">
 					<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
