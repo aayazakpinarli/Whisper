@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from myWhisper.models import Thread
@@ -77,8 +76,10 @@ class RegisterView(View):
                 else:
                     first_name = request.POST['name']
                     last_name = request.POST['surname']
+
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, username=username, password=password)
+
                     try:
                         user.save()
                         print("User saved successfully!")
@@ -94,6 +95,14 @@ class RegisterView(View):
                         print(f"Error saving user: {str(e)}")
                         messages.info(request, 'Error!!')
         return render(request, 'register.html')
+
+
+class VerifyMailView(View):
+    def get(self, request):
+        return render(request, 'verify_email.html')
+
+    def post(self, request):
+        pass
 
 
 class AddFriendView(View):
