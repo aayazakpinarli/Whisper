@@ -6,7 +6,10 @@ from django.contrib.auth.decorators import login_required
 from myWhisper.models import Thread
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
+users = User.objects.all()
 # Create your views here.
 
 
@@ -22,10 +25,26 @@ class MessagesPageView(View):
         # increasing num of hits to the db, in single query I can collect all the messages
         # order_by (ORDER BY)
         threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+        not_added_friends = []
+        already_added_friends = [request.user]
+        for thread in threads:
+            if thread.first_person == request.user:
+                already_added_friends.append(thread.second_person)
+            elif thread.second_person == request.user:
+                already_added_friends.append(thread.first_person)
+        print("FRIENDS")
+        print(already_added_friends[0].id)
+        print("-------------")
+        for user in users:
+            if not user in already_added_friends:
+                not_added_friends.append(user)
+        print(not_added_friends)
+        #print(users - already_added_friends)
         # a context disc is created, includes threads query set
         # this context will be passed to the template for rendering
         context = {
-            'Threads': threads
+            'Threads': threads,
+            'Friends': not_added_friends
         }
 
         return render(request, 'chat/messages.html', context)
@@ -84,13 +103,6 @@ class RegisterView(View):
                     try:
                         user.save()
                         print("User saved successfully!")
-
-                        # Create threads with all existing users
-                        existing_users = User.objects.exclude(id=user.id)
-                        for existing_user in existing_users:
-                            Thread.objects.create(first_person=user, second_person=existing_user)
-                        print("Threads created successfully!")
-
                         return redirect('login')
                     except Exception as e:
                         print(f"Error saving user: {str(e)}")
@@ -107,8 +119,12 @@ class VerifyMailView(View):
 
 
 class AddFriendView(View):
-    def get(self, request):
-        return render(request, 'chat/addFriend.html')
+    def post(self, request):
+        friend_id = request.POST.get('friend_id')
+        friend = User.objects.filter(id=friend_id)
+        Thread.objects.create(first_person=request.user, second_person=friend[0])
+
+        return redirect('/')
 
 
 class ProfileView(View):
