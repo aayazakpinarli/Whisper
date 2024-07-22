@@ -7,9 +7,13 @@ from myWhisper.models import Thread
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
+from .utils import generate_random_number
+from django.core.mail import send_mail
 
 User = get_user_model()
 users = User.objects.all()
+generated_code = generate_random_number()
+
 # Create your views here.
 
 
@@ -81,9 +85,9 @@ class RegisterView(View):
         return render(request, 'register.html')
 
     def post(self, request):
-        password = request.POST['password1']
+        password1 = request.POST['password1']
         confirm_password = request.POST['password2']
-        if password != confirm_password:
+        if password1 != confirm_password:
             messages.info(request, 'Passwords must match!')
         else:
             email = request.POST['email']
@@ -98,16 +102,29 @@ class RegisterView(View):
                     last_name = request.POST['surname']
 
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
-                                                    email=email, username=username, password=password)
+                                                    email=email, username=username, password=password1, is_active=False)
 
+                    content = 'Your verification code is : ' + str(generated_code)
+                    send_mail(
+                        "MyWhisper Registeration",
+                        content,
+                        'mywhisperinf@gmail.com',
+                        [user.email],
+                        # fail_silently: A boolean. When it’s False, send_mail() will raise an smtplib.SMTPException
+                        fail_silently=False,
+                    )
+
+                    print("message send w", generated_code)
                     try:
+                        print(user.id)
                         user.save()
-                        print("User saved successfully!")
-                        return redirect('login')
+                        request.session['registered_user_id'] = user.id
+                        return redirect('verify')
+
                     except Exception as e:
                         print(f"Error saving user: {str(e)}")
                         messages.info(request, 'Error!!')
-        return render(request, 'register.html')
+                        return redirect('login')
 
 
 class VerifyMailView(View):
@@ -115,7 +132,30 @@ class VerifyMailView(View):
         return render(request, 'verify_email.html')
 
     def post(self, request):
-        pass
+        try:
+            user_id = request.session.get('registered_user_id')
+            if not user_id:
+                messages.info(request, 'No user information found.')
+                return redirect('/')
+
+            print(user_id)
+            user = User.objects.get(id=user_id)
+
+            code = request.POST['code']
+            print(code)
+            print(user)
+            if code == str(generated_code):
+                user.is_active = True
+                user.save()
+
+            else:
+                return redirect('/')
+
+        except Exception as e:
+            print(f"Error saving user: {str(e)}")
+            messages.info(request, 'Error!!')
+
+        return redirect('login')
 
 
 class AddFriendView(View):
