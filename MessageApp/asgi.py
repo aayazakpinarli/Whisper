@@ -11,23 +11,28 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 
-from myWhisper import routing
 import os
+import django
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MessageApp.settings')
+django.setup()
+
+import myWhisper.routing
+
+app = get_asgi_application()
 
 # ProtocolTypeRouter: direct the incoming connections to different handlers
 # based on the type of the protocol (HTTP or WebSocket)
 application = ProtocolTypeRouter(
     {
         # HTTP handler
-        "http": get_asgi_application(),
+        "http": app,
         # WebSocket handler
         # route Websocket connections based on URL patterns on websocket_urlpatterns
         "websocket": AuthMiddlewareStack(
             URLRouter(
-                routing.websocket_urlpatterns
+                myWhisper.routing.websocket_urlpatterns
             )
         )
     }
