@@ -8,7 +8,7 @@ from django.db.models import Q
 
 class ThreadManager(models.Manager):
     # kwargs: allow passing keyword arguments; here, it expects user
-    def by_user(self, **kwargs):
+    def get_threads_by_user(self, **kwargs):
         user = kwargs.get('user')
         # construct query condition that checks if the user is either first_person or second_person in thread
         # where first_person = user , | logical OR

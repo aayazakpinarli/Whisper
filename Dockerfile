@@ -21,4 +21,4 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Run the application
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "MessageApp.asgi:application"]
+CMD ["uvicorn", "MessageApp.asgi:application", "-- host", "0.0.0.0", "--port", "8000"]

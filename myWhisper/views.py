@@ -10,9 +10,6 @@ from django.contrib.auth import get_user_model
 from .utils import generate_random_number
 from django.core.mail import send_mail
 
-User = get_user_model()
-users = User.objects.all()
-generated_code = generate_random_number()
 
 # Create your views here.
 
@@ -28,7 +25,13 @@ class MessagesPageView(View):
         # prefetch: optimizing technique that fetches related chatMessage instances in a single query, instead of
         # increasing num of hits to the db, in single query I can collect all the messages
         # order_by (ORDER BY)
-        threads = Thread.objects.by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+        threads = Thread.objects.get_threads_by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+
+
+        # DELETE FOR USE ORM
+        # CREATE ADDFRIEND VIEW
+        # CAN BE USED VALUE LIST TO HIT ONCE
+
         not_added_friends = []
         already_added_friends = [request.user]
         for thread in threads:
@@ -39,6 +42,7 @@ class MessagesPageView(View):
         print("FRIENDS")
         print(already_added_friends[0].id)
         print("-------------")
+        users = User.objects.all()
         for user in users:
             if not user in already_added_friends:
                 not_added_friends.append(user)
@@ -104,6 +108,7 @@ class RegisterView(View):
                     user = User.objects.create_user(first_name=first_name, last_name=last_name,
                                                     email=email, username=username, password=password1, is_active=False)
 
+                    generated_code = generate_random_number()
                     content = 'Your verification code is : ' + str(generated_code)
                     send_mail(
                         "MyWhisper Registeration",
@@ -119,6 +124,8 @@ class RegisterView(View):
                         print(user.id)
                         user.save()
                         request.session['registered_user_id'] = user.id
+                        request.session['generated_code'] = generated_code
+
                         return redirect('verify')
 
                     except Exception as e:
@@ -132,6 +139,10 @@ class VerifyMailView(View):
         return render(request, 'verify_email.html')
 
     def post(self, request):
+
+        # CODE CAN BE ADDED TO THE DATABASE
+        # ADD MAX TIME FOR GENERATED CODE
+
         try:
             user_id = request.session.get('registered_user_id')
             if not user_id:
@@ -142,6 +153,7 @@ class VerifyMailView(View):
             user = User.objects.get(id=user_id)
 
             code = request.POST['code']
+            generated_code = request.session.get('generated_code')
             print(code)
             print(user)
             if code == str(generated_code):
@@ -184,18 +196,16 @@ class ProfileView(View):
             else:
                 user.username = username
                 user.save()
-                return redirect('/')
 
-        if old_password:
-            if new_password:
-                if user.check_password(old_password):
-                    user.set_password(new_password)
-                    user.save()
-                    return redirect('/')
-                else:
-                    messages.info(request, 'Old password is incorrect!')
+        if old_password and new_password:
+            if user.check_password(old_password):
+                user.set_password(new_password)
+                user.save()
+                return redirect('/')
             else:
-                messages.info(request, 'Please enter new password!')
+                messages.info(request, 'Old password is incorrect!')
+        else:
+            messages.info(request, 'Please enter new password!')
 
         if not old_password and not new_password and not username:
             messages.info(request, 'Please fill!')
