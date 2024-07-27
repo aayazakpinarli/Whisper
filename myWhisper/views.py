@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from myWhisper.models import Thread
 from django.views import View
 from django.utils.decorators import method_decorator
-from django.contrib.auth import get_user_model
 from .utils import generate_random_number
 from django.core.mail import send_mail
 
