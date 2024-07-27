@@ -1,13 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Utility class for creating complex queries, allowing OR, AND operations
 from django.db.models import Q
 
 # Create your models here.
 
 
 class ThreadManager(models.Manager):
-    # kwargs: allow passing keyword arguments; here, it expects user
     def get_threads_by_user(self, **kwargs):
         user = kwargs.get('user')
         # construct query condition that checks if the user is either first_person or second_person in thread

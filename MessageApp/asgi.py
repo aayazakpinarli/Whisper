@@ -22,8 +22,6 @@ import myWhisper.routing
 
 app = get_asgi_application()
 
-# ProtocolTypeRouter: direct the incoming connections to different handlers
-# based on the type of the protocol (HTTP or WebSocket)
 application = ProtocolTypeRouter(
     {
         # HTTP handler

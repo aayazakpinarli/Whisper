@@ -14,18 +14,13 @@ from django.core.mail import send_mail
 # Create your views here.
 
 
-# ensure that only authenticated users can access this page
-# dispatch: it will affect all HTTP methods like GET, POST
 @method_decorator(login_required, name='dispatch')
 # view inherited
 class MessagesPageView(View):
     def get(self, request):
-        # calls the custom manager method 'by_user', which retrieves all Thread instances
-        # where the logged-in user is either first_p or second_person
-        # prefetch: optimizing technique that fetches related chatMessage instances in a single query, instead of
-        # increasing num of hits to the db, in single query I can collect all the messages
-        # order_by (ORDER BY)
-        threads = Thread.objects.get_threads_by_user(user=request.user).prefetch_related('chatmessage_thread').order_by('timestamp')
+
+        threads = (Thread.objects.get_threads_by_user(user=request.user)
+                   .prefetch_related('chatmessage_thread').order_by('timestamp'))
 
 
         # DELETE FOR USE ORM
@@ -39,9 +34,7 @@ class MessagesPageView(View):
                 already_added_friends.append(thread.second_person)
             elif thread.second_person == request.user:
                 already_added_friends.append(thread.first_person)
-        print("FRIENDS")
-        print(already_added_friends[0].id)
-        print("-------------")
+
         users = User.objects.all()
         for user in users:
             if not user in already_added_friends:
@@ -115,8 +108,6 @@ class RegisterView(View):
                         content,
                         'mywhisperinf@gmail.com',
                         [user.email],
-                        # fail_silently: A boolean. When it’s False, send_mail() will raise an smtplib.SMTPException
-                        fail_silently=False,
                     )
 
                     print("message send w", generated_code)
@@ -159,10 +150,8 @@ class VerifyMailView(View):
             if code == str(generated_code):
                 user.is_active = True
                 user.save()
-
             else:
                 return redirect('/')
-
         except Exception as e:
             print(f"Error saving user: {str(e)}")
             messages.info(request, 'Error!!')

@@ -80,7 +80,7 @@ function newMessage(message, sent_by_id, thread_id) {
               </div>
               <div class="msg_cotainer">
                  ${message}
-              <span class="msg_time">8:40 AM, Today</span>
+              <span class="msg_time">${timestamp}</span>
               </div>
            </div>
         `
