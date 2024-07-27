@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: uvicorn MessageApp.asgi:application --host 0.0.0.0 --port 8000
     volumes:
       - .:/code
     ports:
@@ -14,7 +14,6 @@ services:
       - DJANGO_SETTINGS_MODULE=MessageApp.settings
     depends_on:
       - db
-
   db:
     image: postgres:13
     environment:

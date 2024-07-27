@@ -10,10 +10,6 @@ COPY requirements.txt .
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-# make migrations
-python manage.py makemigrations
-python manage.py migrate
-
 # Copy the rest of the application code into the container at /code
 COPY myWhisper .
 
@@ -25,4 +21,4 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Run the application
-CMD ["uvicorn", "MessageApp.asgi:application", "-- host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "MessageApp.asgi:application", "-- host", "0.0.0.0", "--port", "8000"]
