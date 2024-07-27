@@ -10,6 +10,10 @@ COPY requirements.txt .
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
+# make migrations
+python manage.py makemigrations
+python manage.py migrate
+
 # Copy the rest of the application code into the container at /code
 COPY myWhisper .
 
