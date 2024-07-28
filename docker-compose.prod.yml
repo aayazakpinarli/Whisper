@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python manage.py runserver
+    command: uvicorn MessageApp.asgi:application --host 0.0.0.0 --port 8000
     volumes:
       - .:/code
     ports:
@@ -24,3 +24,12 @@ services:
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+
+  nginx:
+    build: ./services/nginx
+    ports:
+      # development ise 1337, değilse 80de run
+      - "1337:80"
+    depends_on:
+      - web
+
