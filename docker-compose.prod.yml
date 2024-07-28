@@ -8,6 +8,7 @@ services:
     command: uvicorn MessageApp.asgi:application --host 0.0.0.0 --port 8000
     volumes:
       - .:/code
+      - ./static:/home/app/web/staticfiles
     expose:
       - 8000
     environment:
@@ -27,9 +28,13 @@ services:
 
   nginx:
     build: ./service
+    restart: always
     ports:
       # development ise 1337, değilse 80de run
-      - 1337:80
+      - 80:80
+      - 443:443
+    volumes:
+      - ./service/certs:/etc/nginx/certs
     depends_on:
       - web
 

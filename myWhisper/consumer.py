@@ -28,7 +28,7 @@ class WhisperConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        print("received", event)
+#        print("received", event)
 
         received_data = json.loads(event['text'])
 
@@ -76,7 +76,7 @@ class WhisperConsumer(AsyncConsumer):
         )
 
     async def websocket_disconnect(self, event):
-        print("disconnected", event)
+#        print("disconnected", event)
 
         await self.channel_layer.group_discard(
             self.chat_room,
@@ -84,7 +84,7 @@ class WhisperConsumer(AsyncConsumer):
         )
 
     async def chat_message(self, event):
-        print("chat_message", event)
+ #       print("chat_message", event)
         await self.send({
             'type': 'websocket.send',
             'text': event['text']

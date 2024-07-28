@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-u513--#7o%1her!k_my2%+*hp5l1k(owr-v3=_ymx7_$9r*sl)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', '209.38.204.211']
-CSRF_TRUSTED_ORIGINS = ['http://209.38.204.211:1337']
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost', '209.38.204.211', 'mywhisper.com.tr']
+CSRF_TRUSTED_ORIGINS = ['https://209.38.204.211', 'https://mywhisper.com.tr']
 
 # Application definition
 
