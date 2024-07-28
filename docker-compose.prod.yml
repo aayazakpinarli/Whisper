@@ -8,8 +8,8 @@ services:
     command: uvicorn MessageApp.asgi:application --host 0.0.0.0 --port 8000
     volumes:
       - .:/code
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     environment:
       - DJANGO_SETTINGS_MODULE=MessageApp.settings
     depends_on:
@@ -26,10 +26,10 @@ services:
       - "5432:5432"
 
   nginx:
-    build: ./services/nginx
+    build: ./service
     ports:
       # development ise 1337, değilse 80de run
-      - "1337:80"
+      - 1337:80
     depends_on:
       - web
 
