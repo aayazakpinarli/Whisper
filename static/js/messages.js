@@ -1,15 +1,11 @@
 let input_message = $('#input-message')
+let input_file = document.getElementById('input-file');
 let message_body = $('.msg_card_body')
 let send_message_form = $('#send-message-form')
 const USER_ID = $('#logged-in-user').val()
 
 let loc = window.location
 let wsStart = 'wss://'
-
-if (loc.protocol === 'https') {
-    wsStart = 'wss://'
-}
-
 let endpoint = wsStart + loc.host + loc.pathname
 
 var socket = new WebSocket(endpoint)
@@ -19,17 +15,41 @@ socket.onopen = async function(e) {
     send_message_form.on('submit', function(e){
         e.preventDefault();
         let message = input_message.val()
-        let send_to = get_active_other_user_id();
-        let thread_id = get_active_thread_id();
-        let data = {
-            'message': message,
-            'sent_by': USER_ID,
-            'send_to': send_to,
-            'thread_id': thread_id
+        let file = input_file.files[0]
+        console.log('message', message)
+        console.log('file', file)
+        // base64 stringinin başında data:image yazıyo
+        // checks the image or not
+        if (message && !message.includes('data:')) {
+            let send_to = get_active_other_user_id();
+            let thread_id = get_active_thread_id();
+            let data = {
+                'message': message,
+                'sent_by': USER_ID,
+                'send_to': send_to,
+                'thread_id': thread_id
+            }
+            data = JSON.stringify(data)
+            socket.send(data)
+            $(this)[0].reset()
         }
-        data = JSON.stringify(data)
-        socket.send(data)
-        $(this)[0].reset()
+        if (file) {
+            getBase64(file).then(
+                (res) => {
+                    let send_to = get_active_other_user_id();
+                    let thread_id = get_active_thread_id();
+                    let data = {
+                        'message': res,
+                        'sent_by': USER_ID,
+                        'send_to': send_to,
+                        'thread_id': thread_id
+                    }
+                    data = JSON.stringify(data)
+                    socket.send(data)
+                    $(this)[0].reset()
+                }
+            )
+        }
     })
 }
 
@@ -60,7 +80,22 @@ function newMessage(message, sent_by_id, thread_id) {
 	let message_element;
 	let chat_id = 'chat_' + thread_id
 	if(sent_by_id == USER_ID){
-	    message_element = `
+        if (message.includes('data:image')) {
+            message_element = `
+			<div class="d-flex mb-4 replied">
+				<div class="msg_cotainer_send">
+                    <a href="${message}" download="image.png">
+                        <img src="${message}" style="max-width: 150px; max-height: 100px;"></img>
+                    </a>
+					<span class="msg_time_send">${timestamp}</span>
+				</div>
+				<div class="img_cont_msg">
+					<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+				</div>
+			</div>
+	        `
+        } else {
+            message_element = `
 			<div class="d-flex mb-4 replied">
 				<div class="msg_cotainer_send">
 					${message}
@@ -70,21 +105,37 @@ function newMessage(message, sent_by_id, thread_id) {
 					<img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
 				</div>
 			</div>
-	    `
+	        `
+        }
     }
 	else{
-	    message_element = `
-           <div class="d-flex mb-4 received">
-              <div class="img_cont_msg">
-                 <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
-              </div>
-              <div class="msg_cotainer">
-                 ${message}
-              <span class="msg_time">${timestamp}</span>
-              </div>
-           </div>
-        `
-
+        if (message.includes('data:image')) {
+            message_element = `
+            <div class="d-flex mb-4 received">
+                <div class="img_cont_msg">
+                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                </div>
+                <div class="msg_cotainer">
+                    <a href="${message}" download="image.png">
+                        <img src="${message}" style="max-width: 150px; max-height: 100px;"></img>
+                    </a>
+                <span class="msg_time">${timestamp}</span>
+                </div>
+            </div>
+            `
+        } else {
+            message_element = `
+            <div class="d-flex mb-4 received">
+                <div class="img_cont_msg">
+                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                </div>
+                <div class="msg_cotainer">
+                    ${message}
+                <span class="msg_time">${timestamp}</span>
+                </div>
+            </div>
+            `
+        }
     }
 
     let message_body = $('.messages-wrapper[chat-id="' + chat_id + '"] .msg_card_body')
@@ -118,3 +169,11 @@ function get_active_thread_id(){
     return thread_id
 }
 
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+}
